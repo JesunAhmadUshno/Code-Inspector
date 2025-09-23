@@ -1,0 +1,5 @@
+{
+  "name": "Jesun Code Inspector",
+  "description": "An automated code review tool powered by Jesun. Paste your code, select a language, and get instant, intelligent feedback on quality, style, and potential issues.",
+  "requestFramePermissions": []
+}
