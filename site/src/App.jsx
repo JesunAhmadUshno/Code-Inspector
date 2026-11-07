@@ -7,14 +7,8 @@ import { countFences, fenceSegments, lineCount } from './inspector.js';
 const REPO = 'https://github.com/JesunAhmadUshno/Code-Inspector';
 const blob = (p) => `${REPO}/blob/main/${p}`;
 
-// Every source file of the app, read as text at build time (the dashboard and docs are excluded).
-const SOURCES = import.meta.glob(
-  ['../../**/*.{ts,tsx,json,html,md}', '!../../site/**', '!../../docs/**', '!**/node_modules/**'],
-  { query: '?raw', import: 'default', eager: true },
-);
-const FILES = Object.entries(SOURCES)
-  .map(([p, text]) => ({ path: p.replace(/^\.\.\/\.\.\//, ''), lines: lineCount(text) }))
-  .sort((a, b) => b.lines - a.lines);
+// Per-file line counts of the app's own files, computed in vite.config.js at build time.
+const FILES = [...__INVENTORY__].sort((a, b) => b.lines - a.lines || a.path.localeCompare(b.path));
 const TOTAL_LINES = FILES.reduce((n, f) => n + f.lines, 0);
 const EMPTY_PROMPT = buildReviewPrompt('', LANGUAGES[0].value);
 
