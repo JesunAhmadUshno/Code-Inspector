@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { parseReview } from './parseReview';
 
 interface ReviewOutputProps {
   review: string;
@@ -8,35 +9,19 @@ interface ReviewOutputProps {
 }
 
 const SimpleMarkdownRenderer: React.FC<{ content: string }> = ({ content }) => {
-    const lines = content.split('\n');
     return (
         <div className="prose prose-invert prose-sm max-w-none">
-            {lines.map((line, index) => {
-                if (line.startsWith('### ')) {
-                    return <h3 key={index} className="text-lg font-semibold mt-4 mb-2 text-green-400">{line.substring(4)}</h3>;
+            {parseReview(content).map((block, index) => {
+                switch (block.kind) {
+                    case 'h3': return <h3 key={index} className="text-lg font-semibold mt-4 mb-2 text-green-400">{block.text}</h3>;
+                    case 'h2': return <h2 key={index} className="text-xl font-bold mt-6 mb-3 text-green-300 border-b border-gray-700 pb-2">{block.text}</h2>;
+                    case 'h1': return <h1 key={index} className="text-2xl font-extrabold mt-8 mb-4 text-green-200">{block.text}</h1>;
+                    case 'label': return <p key={index} className="my-2"><strong className="text-gray-300">{block.label}</strong>{block.text}</p>;
+                    case 'li': return <li key={index} className="ml-5 list-disc">{block.text}</li>;
+                    case 'hr': return <hr key={index} className="my-4 border-gray-700" />;
+                    case 'pre': return <pre key={index} className="bg-[#010409] p-3 rounded-md my-2 overflow-x-auto"><code className="font-mono">{block.text}</code></pre>;
+                    default: return <p key={index} className="my-1">{block.text}</p>;
                 }
-                if (line.startsWith('## ')) {
-                    return <h2 key={index} className="text-xl font-bold mt-6 mb-3 text-green-300 border-b border-gray-700 pb-2">{line.substring(3)}</h2>;
-                }
-                if (line.startsWith('# ')) {
-                    return <h1 key={index} className="text-2xl font-extrabold mt-8 mb-4 text-green-200">{line.substring(2)}</h1>;
-                }
-                if (line.startsWith('- **')) {
-                    const boldEnd = line.indexOf('**:', 3);
-                    if (boldEnd !== -1) {
-                        return <p key={index} className="my-2"><strong className="text-gray-300">{line.substring(2, boldEnd + 2)}</strong>{line.substring(boldEnd + 2)}</p>;
-                    }
-                }
-                 if (line.startsWith('- ')) {
-                    return <li key={index} className="ml-5 list-disc">{line.substring(2)}</li>;
-                }
-                if (line.trim() === '---') {
-                    return <hr key={index} className="my-4 border-gray-700" />;
-                }
-                 if (line.startsWith('```')) {
-                     return <pre key={index} className="bg-[#010409] p-3 rounded-md my-2 overflow-x-auto"><code className="font-mono">{line.replace(/```/g, '')}</code></pre>;
-                 }
-                return <p key={index} className="my-1">{line}</p>;
             })}
         </div>
     );

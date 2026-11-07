@@ -1,41 +1,23 @@
 
 import { GoogleGenAI } from "@google/genai";
+import { buildReviewPrompt, MODEL, TEMPERATURE } from "./prompt";
 
-if (!process.env.API_KEY) {
-    throw new Error("API_KEY environment variable not set");
-}
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+let ai: GoogleGenAI | null = null;
 
 export const reviewCode = async (code: string, language: string): Promise<string> => {
-  const prompt = `
-    You are an expert code reviewer and a senior software engineer with decades of experience in ${language}. 
-    Your task is to provide a comprehensive, constructive, and friendly code review.
-
-    Analyze the following ${language} code snippet for potential bugs, style violations, performance issues, security vulnerabilities, and adherence to best practices.
-
-    Code to review:
-    \`\`\`${language}
-    ${code}
-    \`\`\`
-
-    Please provide your feedback in Markdown format. Organize your feedback into the following sections:
-    - **:sparkles: Overall Summary:** A brief, high-level summary of the code's quality.
-    - **:bug: Potential Bugs:** Identify any potential bugs or logical errors.
-    - **:art: Style & Readability:** Comment on coding style, naming conventions, and code clarity.
-    - **:rocket: Performance Suggestions:** Highlight any potential performance bottlenecks and suggest optimizations.
-    - **:shield: Security Concerns:** Point out any security vulnerabilities.
-    
-    If a section has no issues, state "No issues found." in that section. For each point, provide a brief explanation, the line number if applicable, and a suggested correction.
-    Be encouraging and professional in your tone.
-    `;
+    // Checked per call, not at import, so a missing key shows the app's error panel instead of a blank page.
+    if (!process.env.API_KEY) {
+        throw new Error("API_KEY environment variable not set. Add GEMINI_API_KEY to .env.local and restart the dev server.");
+    }
+    ai ??= new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const prompt = buildReviewPrompt(code, language);
 
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
+            model: MODEL,
             contents: prompt,
             config: {
-                temperature: 0.2, // Lower temperature for more deterministic and factual reviews
+                temperature: TEMPERATURE,
             }
         });
         return response.text;
