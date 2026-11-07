@@ -11,7 +11,7 @@ export const Header: React.FC = () => {
            </svg>
         </div>
         <div>
-           <h1 className="text-2xl font-bold text-white">Gemini Code Inspector</h1>
+           <h1 className="text-2xl font-bold text-white">Jesun Code Inspector</h1>
            <p className="text-sm text-gray-400">Instant AI-Powered Code Reviews</p>
         </div>
       </div>

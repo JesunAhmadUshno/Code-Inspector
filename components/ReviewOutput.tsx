@@ -71,7 +71,7 @@ export const ReviewOutput: React.FC<ReviewOutputProps> = ({ review, isLoading, e
   };
 
   return (
-    <div className="bg-[#161b22] border border-gray-800 rounded-lg p-6 w-full min-h-[50vh] lg:min-h-[calc(100vh-180px)] overflow-y-auto">
+    <div aria-live="polite" aria-busy={isLoading} className="bg-[#161b22] border border-gray-800 rounded-lg p-6 w-full min-h-[50vh] lg:min-h-[calc(100vh-180px)] overflow-y-auto">
       {renderContent()}
     </div>
   );

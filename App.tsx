@@ -54,7 +54,7 @@ const App: React.FC = () => {
             <button
               onClick={handleReview}
               disabled={isLoading}
-              className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-green-600/20 disabled:shadow-none"
+              className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 transform motion-safe:hover:scale-105 shadow-lg shadow-green-600/20 disabled:shadow-none"
             >
               {isLoading ? (
                 <>
@@ -82,7 +82,7 @@ const App: React.FC = () => {
         </div>
       </main>
       <footer className="text-center p-4 text-xs text-gray-500">
-        <p>Power by Jesun. For educational purposes only.</p>
+        <p>Powered by Jesun. For educational purposes only.</p>
       </footer>
     </div>
   );
