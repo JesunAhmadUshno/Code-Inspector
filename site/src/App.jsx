@@ -63,7 +63,7 @@ function Dock() {
 export default function App() {
   useReveal();
   return (
-    <div className="wrap">
+    <div className="wrap"><a className="skip" href="#top">Skip to content</a>
       <MenuBar />
       <div className="glow" aria-hidden="true" />
       <Hero />
@@ -77,14 +77,14 @@ export default function App() {
       <footer>
         Every number on this page is imported from the app's own source files at build time, and the prompt builder and parser are the app's own code running in your browser.
         No model call is made here and no review output is shown, because the repo records none.
-      </footer>
+      <nav className="support" aria-label="Support this work"><a href="https://github.com/sponsors/JesunAhmadUshno">Sponsor this work</a><a href="https://github.com/sponsors/JesunAhmadUshno">Donate</a><a href="https://buymeacoffee.com/jesun">Buy Me a Coffee</a><a href="https://calendly.com/jesunahmadushno/30min">Work with me</a></nav></footer>
     </div>
   );
 }
 
 function Hero() {
   return (
-    <header className="card hero window" id="top" data-title="code-inspector — README">
+    <header className="card hero window" id="top" data-title="code-inspector - README">
       <div className="head">
         <p className="eyebrow">Product teardown · React + Gemini</p>
         <span className="pill warn">● Local use only: API key ships to the browser</span>
@@ -183,7 +183,7 @@ function Builder() {
   const [lang, setLang] = useState(LANGUAGES[0].value);
   const prompt = useMemo(() => buildReviewPrompt(code, lang), [code, lang]);
   return (
-    <section id="builder" className="card window reveal" data-title="prompt_builder — live">
+    <section id="builder" className="card window reveal" data-title="prompt_builder - live">
       <div className="head">
         <div>
           <p className="eyebrow">Live · the app's own template</p>
@@ -231,7 +231,7 @@ function Fence() {
   const total = countFences(buildReviewPrompt(code, 'python'));
   const broken = f.markers > 0;
   return (
-    <section id="fence" className="card window reveal" data-title="fence_check — live">
+    <section id="fence" className="card window reveal" data-title="fence_check - live">
       <div className="head">
         <div>
           <p className="eyebrow">Live · prompt integrity</p>
@@ -295,7 +295,7 @@ function Renderer() {
   const counts = blocks.reduce((m, b) => ({ ...m, [b.kind]: (m[b.kind] || 0) + 1 }), {});
   const preset = PRESETS.find((p) => p[1] === md)?.[0];
   return (
-    <section id="renderer" className="card window reveal" data-title="ReviewOutput.tsx — live">
+    <section id="renderer" className="card window reveal" data-title="ReviewOutput.tsx - live">
       <div className="head">
         <div>
           <p className="eyebrow">Live · the app's own parser</p>
@@ -337,7 +337,7 @@ function Tree() {
   const W = 640, row = 24, H = FILES.length * row + 8, l = 260, r = 40;
   const max = FILES[0]?.lines || 1;
   return (
-    <section id="tree" className="card window reveal" data-title={`tree — ${TOTAL_LINES} lines`}>
+    <section id="tree" className="card window reveal" data-title={`tree - ${TOTAL_LINES} lines`}>
       <p className="eyebrow">Codebase inventory</p>
       <h2>A small app: {FILES.length} files, {TOTAL_LINES} lines.</h2>
       <p className="sub">Counted at build time from the files themselves, excluding this dashboard and <span className="mono">docs/</span>. It includes the prompt module, parser and tests added alongside this page.</p>
@@ -366,7 +366,7 @@ const AUDIT = [
   ['Renderer', 'Requested header format not parsed as a label', 'components/parseReview.ts', 'open', 'Found by the new tests: the prompt asks for "- **:bug: Title:**", the rule wants "**:" after index 3.'],
   ['Renderer', 'Multi-line code, numbered lists, inline marks, bare <li>', 'components/parseReview.ts', 'open', 'Replace the line classifier with a block parser, or a pinned Markdown library.'],
   ['Testing', 'No tests at all', 'package.json', 'fixed', 'npm test runs a node:test suite for the prompt and parser; CI runs it before each Pages build.'],
-  ['Evaluation', 'Review quality never measured', '—', 'open', 'Needs a seeded-bug benchmark and a Gemini key budget; see docs/research-review.md.'],
+  ['Evaluation', 'Review quality never measured', '-', 'open', 'Needs a seeded-bug benchmark and a Gemini key budget; see docs/research-review.md.'],
   ['Dependencies', 'Importmap CDN plus npm, Tailwind Play CDN, caret pins, no lockfile', 'index.html', 'open', 'Pick one source (npm), build Tailwind, commit a lockfile with exact pins.'],
   ['Identity', 'Three product names, "Power by" typo, missing /vite.svg', 'index.html', 'fixed', 'One name in title and header, typo fixed, broken icon link removed.'],
   ['Accessibility', 'No live region; hover scale ignores reduced motion', 'components/ReviewOutput.tsx', 'fixed', 'Panel is aria-live with aria-busy; scale is motion-safe only.'],
@@ -390,7 +390,7 @@ function Audit() {
             {AUDIT.map(([area, gap, file, status, note]) => (
               <tr key={gap}>
                 <td>{area}</td><td>{gap}</td>
-                <td>{file === '—' ? '—' : <a className="mono" href={blob(file)}>{file}</a>}</td>
+                <td>{file === '-' ? '-' : <a className="mono" href={blob(file)}>{file}</a>}</td>
                 <td><span className={`pill ${status === 'fixed' ? 'good' : 'warn'}`}>{status}</span></td>
                 <td className="hint">{note}</td>
               </tr>
