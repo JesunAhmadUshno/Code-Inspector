@@ -1,0 +1,18 @@
+app:
+  - changed-files:
+      - any-glob-to-any-file: ["App.tsx", "index.tsx", "constants.ts", "index.html"]
+components:
+  - changed-files:
+      - any-glob-to-any-file: ["components/**"]
+services:
+  - changed-files:
+      - any-glob-to-any-file: ["services/**"]
+site:
+  - changed-files:
+      - any-glob-to-any-file: ["site/**"]
+docs:
+  - changed-files:
+      - any-glob-to-any-file: ["docs/**", "README.md"]
+automation:
+  - changed-files:
+      - any-glob-to-any-file: [".github/**"]
